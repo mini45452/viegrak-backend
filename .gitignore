@@ -30,11 +30,11 @@ coverage/
 bower_components/
 
 # .env files
-.env
-.env.test
+# .env
+# .env.test
 
 # dotenv environment variables file
-.env*
+# .env*
 
 # IDE / Editor directories
 .idea/
