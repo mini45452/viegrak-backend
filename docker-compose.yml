@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "37102:37102"
+    env_file:
+      - ./user-service/.env
+    depends_on:
+      - db-service
+
+  room-service:
+    build: ./room-service
+    ports:
+      - "37104:37104"
+    env_file:
+      - ./room-service/.env
+    depends_on:
+      - db-service
+
+  message-service:
+    build: ./message-service
+    ports:
+      - "37105:37105"
+    env_file:
+      - ./message-service/.env
+    depends_on:
+      - db-service
+
+  db-service:
+    image: postgres:13
+    ports:
+      - "37103:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=viegrak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "37106:80"
+      - "37107:443"
+    depends_on:
+      - user-service
+      - room-service
+      - message-service
+
+volumes:
+  postgres_data:
